@@ -181,7 +181,7 @@ private struct Engine<T: Equatable> {
             guard predicate(input) else {
                 return false
             }
-            return recursive(instructions: i, index: input.count, input: input, capture: &capture)
+            return recursive(instructions: i, index: index + 1, input: [], capture: &capture)
         case .Match:
 //            assert(index == input.count)
             return true

@@ -13,6 +13,7 @@
 		5C0D60BF1CD1848400D00494 /* ParserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C0D60BE1CD1848400D00494 /* ParserTests.swift */; };
 		5C0D60CA1CD30EC900D00494 /* re1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C0D60C91CD30EC900D00494 /* re1.swift */; };
 		5C0D60CC1CD3440A00D00494 /* Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C0D60CB1CD3440A00D00494 /* Parser.swift */; };
+		5C45E0261CE2C8ED00EDDA72 /* customRe1Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C45E0251CE2C8ED00EDDA72 /* customRe1Tests.swift */; };
 		5C7E15561CD78D9900DC0AF3 /* re1Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7E15551CD78D9900DC0AF3 /* re1Tests.swift */; };
 		5C7E15581CD7B1CF00DC0AF3 /* tests in Resources */ = {isa = PBXBuildFile; fileRef = 5C7E15571CD7B1CF00DC0AF3 /* tests */; };
 /* End PBXBuildFile section */
@@ -37,6 +38,7 @@
 		5C0D60C01CD1848400D00494 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5C0D60C91CD30EC900D00494 /* re1.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = re1.swift; sourceTree = "<group>"; };
 		5C0D60CB1CD3440A00D00494 /* Parser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Parser.swift; sourceTree = "<group>"; };
+		5C45E0251CE2C8ED00EDDA72 /* customRe1Tests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = customRe1Tests.swift; sourceTree = "<group>"; };
 		5C7E15551CD78D9900DC0AF3 /* re1Tests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = re1Tests.swift; sourceTree = "<group>"; };
 		5C7E15571CD7B1CF00DC0AF3 /* tests */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = tests; sourceTree = "<group>"; };
 		5FF51DDBF62C8AD52FAA9F0D /* Pods_re1Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_re1Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -106,6 +108,7 @@
 			isa = PBXGroup;
 			children = (
 				5C7E15551CD78D9900DC0AF3 /* re1Tests.swift */,
+				5C45E0251CE2C8ED00EDDA72 /* customRe1Tests.swift */,
 				5C7E15571CD7B1CF00DC0AF3 /* tests */,
 				5C0D60BE1CD1848400D00494 /* ParserTests.swift */,
 				5C0D60CB1CD3440A00D00494 /* Parser.swift */,
@@ -293,6 +296,7 @@
 				5C0D60CC1CD3440A00D00494 /* Parser.swift in Sources */,
 				5C7E15561CD78D9900DC0AF3 /* re1Tests.swift in Sources */,
 				5C0D60BF1CD1848400D00494 /* ParserTests.swift in Sources */,
+				5C45E0261CE2C8ED00EDDA72 /* customRe1Tests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

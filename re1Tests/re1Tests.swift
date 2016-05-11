@@ -37,33 +37,17 @@ class re1Tests: QuickSpec {
             }
             let testFile = try! String(contentsOfURL: URL)
             let tests = parseTestsFile(testFile)
-            it("...") {
-                tests.forEach { component in
-                    itBehavesLike("regex", sharedExampleContext: {
-                        return [
-                            "index": component.index,
-                            "regex": component.regex,
-                            "string": component.string,
-                            "matches": component.ranges
-                        ]
-                    })
-                }
+            tests.forEach { component in
+//                itBehavesLike("regex", sharedExampleContext: {
+//                    return [
+//                        "index": component.index,
+//                        "regex": component.regex,
+//                        "string": component.string,
+//                        "matches": component.ranges
+//                    ]
+//                })
             }
-        }
-        
-        fdescribe("and") {
-            it("should iterate over same instructions") {
-                let re: Regexp<String> = .Paren(.And(.Literal({
-                    $0.uppercaseString == "H"
-                }), .Literal({
-                    $0 == "h"
-                })), n: 0)
-                let input = "hello"
-                let ranges = match(re, input)
-                expect(ranges).to(equal([0..<1]))
-            }
-        }
-        
+        }                
     }
 }
 
