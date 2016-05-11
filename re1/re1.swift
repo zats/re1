@@ -14,6 +14,7 @@ public indirect enum Regexp<T: Equatable> {
     case Dot
     case Cat(Regexp, Regexp)
     case Literal(T -> Bool)
+    case SequenceLiteral([T] -> Bool)
     case Plus(Regexp, greedy: Bool)
     case Quest(Regexp, greedy: Bool)
     case Alt(Regexp, Regexp)
@@ -43,6 +44,7 @@ public extension Regexp {
 
 
 private enum Opcode<T: Equatable> {
+    case SequenceLiteral([T] -> Bool)
     case Char(T -> Bool)
     case Match
     case Jmp(Int)
@@ -94,6 +96,9 @@ private struct Emitter<T: Equatable> {
             emit(r, instructions: &i)
             let pc2 = Inst<T>(.Save(2 * n + 1))
             i.append(pc2)
+        case let .SequenceLiteral(predicate):
+            let pc = Inst(.SequenceLiteral(predicate))
+            i.append(pc)
         case let .Literal(predicate):
             let pc = Inst(.Char(predicate))
             i.append(pc)
@@ -148,6 +153,7 @@ private struct Emitter<T: Equatable> {
             let rightIndex = i.count
             emit(right, instructions: &i)
             split.opcode = .Split(leftIndex, rightIndex)
+            
         }
     }
 }
@@ -167,11 +173,17 @@ private struct Engine<T: Equatable> {
             guard let char = input.first else {
                 return false
             }
-            if !value(char) {
+            guard value(char) else {
                 return false
             }
             return recursive(instructions: i, index: index + 1, input: Array(input.dropFirst()), capture: &capture)
+        case let .SequenceLiteral(predicate):
+            guard predicate(input) else {
+                return false
+            }
+            return recursive(instructions: i, index: input.count, input: input, capture: &capture)
         case .Match:
+//            assert(index == input.count)
             return true
         case let .Jmp(to):
             return recursive(instructions: i, index: to, input: input, capture: &capture)

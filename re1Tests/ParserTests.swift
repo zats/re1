@@ -132,8 +132,10 @@ extension Regexp: CustomStringConvertible, CustomDebugStringConvertible {
         switch self {
         case .Dot:
             return "dot"
-        case let .Literal(value):
-            return "literal(\(value))"
+        case let .Literal(predicate):
+            return "literal(\(predicate))"
+        case let .SequenceLiteral(predicate):
+            return "sequenceLiteral(\(predicate))"
         case let .Paren(re, n):
             return "paren(\(re), \(n))"
         case let .Cat(left, right):
