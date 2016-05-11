@@ -39,6 +39,7 @@
 		5C0D60C91CD30EC900D00494 /* re1.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = re1.swift; sourceTree = "<group>"; };
 		5C0D60CB1CD3440A00D00494 /* Parser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Parser.swift; sourceTree = "<group>"; };
 		5C45E0251CE2C8ED00EDDA72 /* customRe1Tests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = customRe1Tests.swift; sourceTree = "<group>"; };
+		5C4D601A1CE383D400F33F11 /* Playground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = Playground.playground; sourceTree = "<group>"; };
 		5C7E15551CD78D9900DC0AF3 /* re1Tests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = re1Tests.swift; sourceTree = "<group>"; };
 		5C7E15571CD7B1CF00DC0AF3 /* tests */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = tests; sourceTree = "<group>"; };
 		5FF51DDBF62C8AD52FAA9F0D /* Pods_re1Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_re1Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -77,6 +78,7 @@
 		5C0D60A51CD1848400D00494 = {
 			isa = PBXGroup;
 			children = (
+				5C4D601A1CE383D400F33F11 /* Playground.playground */,
 				5C0D60B11CD1848400D00494 /* re1 */,
 				5C0D60BD1CD1848400D00494 /* re1Tests */,
 				5C0D60B01CD1848400D00494 /* Products */,

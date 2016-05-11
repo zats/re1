@@ -45,7 +45,7 @@ public extension RegularExpression {
 
 public extension RegularExpression {
     public func match(input: [T]) -> [Range<Int>] {
-        let re = self//.preprocessed()
+        let re = self.preprocessed()
         let instructions = Emitter.emit(re)
         guard let capture = Engine.recursive(instructions: instructions, index: 0, input: input) else {
             fatalError()
