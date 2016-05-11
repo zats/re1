@@ -33,35 +33,35 @@ class ParserTests: QuickSpec {
                 return [
                     "string": "a(b)",
                     
-                    "regex": Box(.Cat(.literal("a"), .Paren(.literal("b"), n: 0)))
+                    "regex": Box(.Cat(.literal("a"), .Parentheses(.literal("b"), n: 0)))
                 ]
             }
 
             itBehavesLike("parser") {
                 return [
                     "string": "(ab*)",
-                    "regex": Box(.Paren(.Cat(.literal("a"), .Star(.literal("b"), greedy: true)), n: 0))
+                    "regex": Box(.Parentheses(.Cat(.literal("a"), .Star(.literal("b"), greedy: true)), n: 0))
                 ]
             }
 
             itBehavesLike("parser") {
                 return [
                     "string": "(ab*)*",
-                    "regex": Box(.Star(.Paren(.Cat(.literal("a"), .Star(.literal("b"), greedy: true)), n: 0), greedy: true))
+                    "regex": Box(.Star(.Parentheses(.Cat(.literal("a"), .Star(.literal("b"), greedy: true)), n: 0), greedy: true))
                 ]
             }
 
             itBehavesLike("parser") {
                 return [
                     "string": "(a(b))",
-                    "regex": Box(.Paren(.Cat(.literal("a"), .Paren(.literal("b"), n: 1)), n: 0))
+                    "regex": Box(.Parentheses(.Cat(.literal("a"), .Parentheses(.literal("b"), n: 1)), n: 0))
                 ]
             }
             
             itBehavesLike("parser") {
                 return [
                     "string": "(a)(b)",
-                    "regex": Box(.Cat(.Paren(.literal("a"), n: 0), .Paren(.literal("b"), n: 1)))
+                    "regex": Box(.Cat(.Parentheses(.literal("a"), n: 0), .Parentheses(.literal("b"), n: 1)))
                 ]
             }
 
@@ -75,7 +75,7 @@ class ParserTests: QuickSpec {
             itBehavesLike("parser") {
                 return [
                     "string": "(..)*(...)*",
-                    "regex": Box(.Cat(.Star(.Paren(.Cat(.Dot, .Dot), n: 0), greedy: true), .Star(.Paren(.Cat(.Cat(.Dot, .Dot), .Dot), n: 1), greedy: true)))
+                    "regex": Box(.Cat(.Star(.Parentheses(.Cat(.Dot, .Dot), n: 0), greedy: true), .Star(.Parentheses(.Cat(.Cat(.Dot, .Dot), .Dot), n: 1), greedy: true)))
                 ]
             }
 
@@ -89,7 +89,7 @@ class ParserTests: QuickSpec {
             itBehavesLike("parser") {
                 return [
                     "string": "(aa|aaa)*|(a|aaaaa)",
-                    "regex": Box(.Alt(.Star(.Paren(.Alt(.Cat(.literal("a"), .literal("a")), .Cat(.Cat(.literal("a"), .literal("a")), .literal("a"))), n: 0), greedy: true), .Paren(.Alt(.literal("a"), .Cat(.Cat(.Cat(.Cat(.literal("a"), .literal("a")), .literal("a")), .literal("a")), .literal("a"))), n: 1)))
+                    "regex": Box(.Alt(.Star(.Parentheses(.Alt(.Cat(.literal("a"), .literal("a")), .Cat(.Cat(.literal("a"), .literal("a")), .literal("a"))), n: 0), greedy: true), .Parentheses(.Alt(.literal("a"), .Cat(.Cat(.Cat(.Cat(.literal("a"), .literal("a")), .literal("a")), .literal("a")), .literal("a"))), n: 1)))
                 ]
             }
         }
@@ -97,15 +97,15 @@ class ParserTests: QuickSpec {
 }
 
 private class Box {
-    let unbox: Regexp<String>
-    init(_ boxed: Regexp<String>) {
-        self.unbox = .Cat(.Star(.Dot, greedy: false), .Paren(Box.shiftParen(boxed), n:0))
+    let unbox: RegularExpression<String>
+    init(_ boxed: RegularExpression<String>) {
+        self.unbox = .Cat(.Star(.Dot, greedy: false), .Parentheses(Box.shiftParen(boxed), n:0))
     }
     
-    static func shiftParen(boxed: Regexp<String>) -> Regexp<String> {
+    static func shiftParen(boxed: RegularExpression<String>) -> RegularExpression<String> {
         switch boxed {
-        case let .Paren(re, n):
-            return .Paren(shiftParen(re), n: n + 1)
+        case let .Parentheses(re, n):
+            return .Parentheses(shiftParen(re), n: n + 1)
         case let .Cat(left, right):
             return .Cat(shiftParen(left), shiftParen(right))
         case let .Alt(left, right):
@@ -122,7 +122,7 @@ private class Box {
     }
 }
 
-extension Regexp: CustomStringConvertible, CustomDebugStringConvertible {
+extension RegularExpression: CustomStringConvertible, CustomDebugStringConvertible {
     
     public var debugDescription: String {
         return description
@@ -134,9 +134,9 @@ extension Regexp: CustomStringConvertible, CustomDebugStringConvertible {
             return "dot"
         case let .Literal(predicate):
             return "literal(\(predicate))"
-        case let .SequenceLiteral(predicate):
+        case let .Sequence(predicate):
             return "sequenceLiteral(\(predicate))"
-        case let .Paren(re, n):
+        case let .Parentheses(re, n):
             return "paren(\(re), \(n))"
         case let .Cat(left, right):
             return "cat(\(left), \(right))"
@@ -154,9 +154,9 @@ extension Regexp: CustomStringConvertible, CustomDebugStringConvertible {
     }
 }
 
-public func ==<T: Equatable>(lhs: Regexp<T>, rhs: Regexp<T>) -> Bool {
+public func ==<T: Equatable>(lhs: RegularExpression<T>, rhs: RegularExpression<T>) -> Bool {
     switch (lhs, rhs) {
-    case let (.Paren(re1, depth1), .Paren(re2, depth2)):
+    case let (.Parentheses(re1, depth1), .Parentheses(re2, depth2)):
         return re1 == re2 && depth1 == depth2
     case let (.Star(re1, greedy1), .Star(re2, greedy2)):
         return greedy1 == greedy2 && re1 == re2

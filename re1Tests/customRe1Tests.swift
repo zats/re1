@@ -12,14 +12,26 @@ import Nimble
 
 class customRe1Tests: QuickSpec {
     override func spec() {
+        describe("sequenceLiteral") {
+            it("yield correct range") {
+                let re: RegularExpression<String> = .Parentheses(.Sequence({
+                        let str: String = $0.reduce("", combine: +) // compiler aid
+                        return str == "hello"
+                }), n: 0)
+                let input = "hello"
+                let ranges = match(re, input)
+                expect(ranges).to(equal([0..<5]))
+            }
+        }
+        
         describe("and") {
-            it("should iterate over same instructions") {
-                let re: Regexp<String> = .Paren(.And(
-                    .SequenceLiteral({
+            it("iterates over the same instructions") {
+                let re: RegularExpression<String> = .Parentheses(.And(
+                    .Sequence({
                         let str: String = $0.reduce("", combine: +) // compiler aid
                         return str == "hello"
                     }),
-                    .SequenceLiteral({
+                    .Sequence({
                         let str: String = $0.reduce("", combine: +)  // compiler aid
                         return str == "hello"
                     })
@@ -27,6 +39,24 @@ class customRe1Tests: QuickSpec {
                 let input = "hello"
                 let ranges = match(re, input)
                 expect(ranges).to(equal([0..<5]))
+            }
+            
+            it("returns shortest match length") {
+                let re: RegularExpression<String> = .Parentheses(.And(
+                    .Sequence({
+                        let str: String = $0.reduce("", combine: +) // compiler aid
+                        return str == "hello"
+                    }),
+                    .cat(
+                        .literal("h"),
+                        .literal("e"),
+                        .literal("l"),
+                        .literal("l")
+                    )
+                ), n: 0)
+                let input = "hello"
+                let ranges = match(re, input)
+                expect(ranges).to(equal([0..<4]))
             }
         }
     }

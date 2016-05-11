@@ -10,16 +10,16 @@ import re1
 
 typealias StringGenerator = IndexingGenerator<String.CharacterView>
 
-func parse(generator: String) -> Regexp<String>? {
-    var stack: [Regexp<String>] = []
+func parse(generator: String) -> RegularExpression<String>? {
+    var stack: [RegularExpression<String>] = []
     var parantCount = 1
     parse(generator.characters.generate(), stack: &stack, parantCount: &parantCount)
     let re = stack.removeLast()
     assert(stack.isEmpty)
-    return .Cat(.Star(.Dot, greedy: false), .Paren(re, n:0))
+    return .Cat(.Star(.Dot, greedy: false), .Parentheses(re, n:0))
 }
 
-private func parse(generator: StringGenerator, inout stack: [Regexp<String>], inout parantCount: Int) {
+private func parse(generator: StringGenerator, inout stack: [RegularExpression<String>], inout parantCount: Int) {
     var generator = generator
     guard let first = generator.next() else { return }
     var char = String(first)
@@ -32,16 +32,16 @@ private func parse(generator: StringGenerator, inout stack: [Regexp<String>], in
         stack.append(.Quest(stack.removeLast(), greedy: true))
     case "(":
         let substr = parenSubstr(&generator)
-        var substack: [Regexp<String>] = []
+        var substack: [RegularExpression<String>] = []
         let localParentCont = parantCount
         parantCount += 1
         parse(substr.characters.generate(), stack: &substack, parantCount: &parantCount)
         let subre = substack.removeFirst()
         assert(substack.isEmpty)
         if stack.isEmpty {
-            stack.append(.Paren(subre, n: localParentCont))
+            stack.append(.Parentheses(subre, n: localParentCont))
         } else {
-            stack.append(.Cat(stack.removeLast(), lookahead(&generator, .Paren(subre, n: localParentCont))))
+            stack.append(.Cat(stack.removeLast(), lookahead(&generator, .Parentheses(subre, n: localParentCont))))
         }
     case ".":
         if stack.isEmpty {
@@ -50,7 +50,7 @@ private func parse(generator: StringGenerator, inout stack: [Regexp<String>], in
             stack.append(.Cat(stack.removeLast(), lookahead(&generator, .Dot)))
         }
     case "|":
-        var substack: [Regexp<String>] = []
+        var substack: [RegularExpression<String>] = []
         parse(generator, stack: &substack, parantCount: &parantCount)
         let right = substack.removeLast()
         assert(substack.isEmpty)
@@ -71,11 +71,11 @@ private func parse(generator: StringGenerator, inout stack: [Regexp<String>], in
     parse(generator, stack: &stack, parantCount: &parantCount)
 }
 
-private func lookahead(inout generator: StringGenerator, _ regex: Regexp<String>) -> Regexp<String> {
+private func lookahead(inout generator: StringGenerator, _ regex: RegularExpression<String>) -> RegularExpression<String> {
     var localGenerator = generator
     guard let c = localGenerator.next() else { return regex }
     let char = String(c)
-    let re: Regexp<String>
+    let re: RegularExpression<String>
     switch char {
     case "+":
         re = .Plus(regex, greedy: true)

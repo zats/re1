@@ -51,7 +51,7 @@ class re1Tests: QuickSpec {
     }
 }
 
-func match(re: Regexp<String>, _ input: String) -> [Range<Int>] {
+func match(re: RegularExpression<String>, _ input: String) -> [Range<Int>] {
     return re.match(input.characters.map{String($0)})
 }
 
